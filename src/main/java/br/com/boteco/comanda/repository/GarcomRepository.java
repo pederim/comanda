@@ -6,4 +6,11 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface GarcomRepository extends JpaRepository<GarcomModel, Long> {
+
+    boolean existsByCpf(String cpf);
+
+    boolean existsByEmail(String email);
+
+
+
 }
