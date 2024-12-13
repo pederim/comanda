@@ -40,8 +40,8 @@ public class GarcomModel {
 
     @NotNull(message = "Não admite valor nulo.")
     @NotBlank(message = "Não admite ausência de valor.")
-    @Max(value = 11, message = "O valor deverá ser de 11 caracteres.")
-    @Min(value = 11, message = "O valor deverá ser de 11 caracteres.")
+    @Max(value = 1, message = "O valor deverá ser de 11 caracteres.")
+    @Min(value = 1, message = "O valor deverá ser de 11 caracteres.")
     @Column(name = "telefone",  length = 11, nullable = false, unique = true)
     private String telefone;
 
