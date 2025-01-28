@@ -6,6 +6,7 @@ import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.br.CPF;
 import org.modelmapper.ModelMapper;
 
 import java.time.LocalDate;
@@ -33,15 +34,14 @@ public class GarcomModel {
 
     @NotNull(message = "Não admite valor nulo.")
     @NotBlank(message = "Não admite ausência de valor.")
-    @Max(value = 11, message = "O valor deverá ser de 11 caracteres.")
-    @Min(value = 11, message = "O valor deverá ser de 11 caracteres.")
+    @Size(min = 11, max = 11, message = "O valor deverá ser de 11 caracteres.")
+    @CPF
     @Column(name = "cpf", length = 11, nullable = false, unique = true)
     private String cpf;
 
     @NotNull(message = "Não admite valor nulo.")
     @NotBlank(message = "Não admite ausência de valor.")
-    @Max(value = 1, message = "O valor deverá ser de 11 caracteres.")
-    @Min(value = 1, message = "O valor deverá ser de 11 caracteres.")
+    @Size(min = 11, max = 11, message = "O valor deverá ser de 11 caracteres.")
     @Column(name = "telefone",  length = 11, nullable = false, unique = true)
     private String telefone;
 
@@ -53,8 +53,8 @@ public class GarcomModel {
 
     @NotNull(message = "Não admite valor nulo.")
     @NotBlank(message = "Não admite ausência de valor.")
-    @Max(value = 1, message = "O valor deverá ser de 1 caracter.")
-    @Min(value = 1, message = "O valor deverá ser de 1 caracter.")
+    //@Pattern(regexp(),,"O valor deve ser M ou F")
+    @Size(min = 1, max = 1, message = "O valor deverá ser de 1 caracter.")
     @Column(name = "sexo", length = 1, nullable = false)
     private String sexo;
 

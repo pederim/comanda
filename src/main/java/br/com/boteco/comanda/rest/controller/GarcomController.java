@@ -23,6 +23,12 @@ public class GarcomController {
         return ResponseEntity.ok(garcomDTOS);
     }
 
+    @GetMapping("/obterGarcom")
+    public ResponseEntity<GarcomDTO> obterGarcom(Long id) {
+        GarcomDTO garcomDTO = garcomService.obterGarcom(id);
+        return ResponseEntity.ok((GarcomDTO) garcomDTO);
+    }
+
     @PostMapping
     public ResponseEntity<GarcomDTO> salvar(@RequestBody @Valid GarcomModel novoGarcom) {
         //GarcomDTO novoGarcomDTO = garcomService.salvar(novoGarcom);
