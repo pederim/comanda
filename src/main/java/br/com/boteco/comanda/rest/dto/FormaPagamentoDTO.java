@@ -21,8 +21,14 @@ public class FormaPagamentoDTO {
     @Column(name = "descricao", length = 255)
     private String descricao;
 
+    public FormaPagamentoDTO(Object o, String formaDePagamentoNãoEncontrada, int i) {
+    }
+
     public FormaPagamentoModel toModel() {
         ModelMapper modelMapper = new ModelMapper();
         return modelMapper.map(this, FormaPagamentoModel.class);
+    }
+
+    public void setQuantidadeUsos(Long aLong) {
     }
 }

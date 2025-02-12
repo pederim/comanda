@@ -2,13 +2,15 @@ package br.com.boteco.comanda.service;
 
 import br.com.boteco.comanda.exception.*;
 import br.com.boteco.comanda.model.GarcomModel;
+import br.com.boteco.comanda.repository.ComandaRepository;
 import br.com.boteco.comanda.repository.GarcomRepository;
 import br.com.boteco.comanda.rest.dto.GarcomDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class GarcomServiceImpl implements GarcomService {
@@ -16,13 +18,15 @@ public class GarcomServiceImpl implements GarcomService {
     @Autowired
     private GarcomRepository garcomRepository;
 
+    @Autowired
+    private ComandaRepository comandaRepository;
+
     @Transactional(readOnly = true)
     @Override
     public List<GarcomDTO> obterTodos() {
-        List<GarcomModel> garconsModels = garcomRepository.findAll();
-        return garconsModels.stream()
+        return garcomRepository.findAll().stream()
                 .map(GarcomModel::toDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Transactional(readOnly = true)
@@ -33,39 +37,37 @@ public class GarcomServiceImpl implements GarcomService {
         return garcomModel.toDTO();
     }
 
-    @Transactional
     @Override
     public GarcomDTO salvar(GarcomModel novoGarcom) {
-        if (garcomRepository.existsByCpf(novoGarcom.getCpf())) {
-            throw new ConstraintException("Já existe um garçom com esse CPF " + novoGarcom.getCpf() + " na base de dados");
-        }
-        if (garcomRepository.existsByEmail(novoGarcom.getEmail())) {
-            throw new ConstraintException("Já existe um garçom com esse Email " + novoGarcom.getEmail() + " na base de dados");
-        }
-        return garcomRepository.save(novoGarcom).toDTO();
+        return null;
     }
 
-    @Transactional
     @Override
     public GarcomDTO atualizar(GarcomModel garcomExistente) {
-        if (!garcomRepository.existsByCpf(garcomExistente.getCpf())) {
-            throw new ConstraintException("O garçom com esse CPF " + garcomExistente.getCpf() + " não existe na base de dados");
-        }
-        if (!garcomRepository.existsByEmail(garcomExistente.getEmail())) {
-            throw new ConstraintException("Não existe um garçom com esse Email " + garcomExistente.getEmail() + " na base de dados");
-        }
-        return garcomRepository.save(garcomExistente).toDTO();
+        return null;
     }
 
-    @Transactional
     @Override
     public void deletar(GarcomModel garcomExistente) {
-        if (!garcomRepository.existsByCpf(garcomExistente.getCpf())) {
-            throw new ConstraintException("O garçom com esse CPF " + garcomExistente.getCpf() + " não existe na base de dados");
-        }
-        if (!garcomRepository.existsByEmail(garcomExistente.getEmail())) {
-            throw new ConstraintException("Não existe um garçom com esse Email " + garcomExistente.getEmail() + " na base de dados");
-        }
-        garcomRepository.delete(garcomExistente);
+
     }
+
+    @Transactional(readOnly = true)
+    public GarcomDTO obterGarcomMaiorFaturamento(LocalDateTime inicio, LocalDateTime fim) {
+        Object[] resultado = comandaRepository.findGarcomMaiorFaturamento(inicio, fim);
+        if (resultado == null) {
+            return new GarcomDTO(null, "Nenhum garçom encontrado", BigDecimal.ZERO);
+        }
+
+        GarcomModel garcom = garcomRepository.findById((Long) resultado[0])
+                .orElse(null);
+
+        if (garcom != null) {
+            // Criar o DTO passando o faturamento direto no construtor
+            return new GarcomDTO(garcom.getIdGarcom(), garcom.getNome(), (BigDecimal) resultado[1]);
+        }
+
+        return new GarcomDTO(null, "Garçom não encontrado", BigDecimal.ZERO);
+    }
+
 }

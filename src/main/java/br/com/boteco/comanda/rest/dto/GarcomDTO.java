@@ -6,6 +6,7 @@ import jakarta.validation.constraints.*;
 import lombok.Data;
 import org.modelmapper.ModelMapper;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Data
@@ -29,6 +30,9 @@ public class GarcomDTO {
 
     @Column(name = "sexo", length = 1, nullable = false)
     private String sexo;
+
+    public GarcomDTO(Object o, String nenhumGarçomEncontrado, BigDecimal zero) {
+    }
 
     public GarcomModel toModel(){
         ModelMapper modelMapper = new ModelMapper();

@@ -1,5 +1,6 @@
 package br.com.boteco.comanda.model;
 
+import br.com.boteco.comanda.rest.dto.ProdutoDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -33,4 +34,10 @@ public class ProdutoModel {
     @NotNull(message = "Status do produto não pode ser nulo.")
     @Column(name = "status", length = 255, nullable = false)
     private String status;
+
+    public ProdutoDTO toDTO() {
+        return new ProdutoDTO(this.idProduto, this.nome, this.descricao, this.preco, this.status);
+    }
+
+
 }

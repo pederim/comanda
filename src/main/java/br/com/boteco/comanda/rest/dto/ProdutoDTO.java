@@ -21,8 +21,24 @@ public class ProdutoDTO {
     @Column(name = "status", length = 255, nullable = false)
     private String status;
 
+    public ProdutoDTO(Object o, String nenhumProdutoEncontrado, int i) {
+    }
+
     public ProdutoModel toModel() {
         ModelMapper modelMapper = new ModelMapper();
         return modelMapper.map(this, ProdutoModel.class);
     }
+
+    public void setQuantidadeVendida(Long aLong) {
+    }
+
+    public ProdutoDTO(Long idProduto, String nome, String descricao, Float preco, String status) {
+        this.idProduto = idProduto;
+        this.nome = nome;
+        this.descricao = descricao;
+        this.preco = preco;
+        this.status = status;
+    }
+
+
 }
