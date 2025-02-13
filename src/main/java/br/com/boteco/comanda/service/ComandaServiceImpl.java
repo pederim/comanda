@@ -23,10 +23,6 @@ public class ComandaServiceImpl implements ComandaService {
         return total != null ? total : BigDecimal.ZERO;
     }
 
-    @Transactional(readOnly = true)
-    public List<Object[]> listarFaturamentoPorGarcom(LocalDateTime inicio, LocalDateTime fim) {
-        return Collections.singletonList(comandaRepository.listarFaturamentoPorGarcom(inicio, fim));
-    }
 
     @Override
     public List<ComandaDTO> listarTodas() {

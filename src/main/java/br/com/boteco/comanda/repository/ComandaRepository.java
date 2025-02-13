@@ -32,24 +32,13 @@ public interface ComandaRepository extends JpaRepository<ComandaModel, Long> {
                                         @Param("fim") LocalDateTime fim);
 
     @Query("""
-        SELECT c.garcom, SUM(c.valorTotalComanda) 
+        SELECT c.formaPagamento, COUNT(c.idComanda) 
         FROM ComandaModel c 
-        WHERE c.dataHoraAbertura BETWEEN :inicio AND :fim 
+        WHERE c.dataHoraFechamento BETWEEN :inicio AND :fim 
         AND c.status = 'Fechado'
-        GROUP BY c.garcom
-        ORDER BY SUM(c.valorTotalComanda) DESC
-    """)
-    Object[] listarFaturamentoPorGarcom(@Param("inicio") LocalDateTime inicio,
-                                        @Param("fim") LocalDateTime fim);
-
-    @Query("""
-        SELECT c.formaPagamento.nome, COUNT(c.idComanda) 
-        FROM ComandaModel c 
-        JOIN c.formaPagamento f 
-        WHERE c.dataHoraAbertura BETWEEN :inicio AND :fim 
-        GROUP BY c.formaPagamento.nome
+        GROUP BY c.formaPagamento
         ORDER BY COUNT(c.idComanda) DESC
     """)
     Object[] procurarFormaPagamentoMaisUtilizada(@Param("inicio") LocalDateTime inicio,
-                                             @Param("fim") LocalDateTime fim);
+                                                 @Param("fim") LocalDateTime fim);
 }
